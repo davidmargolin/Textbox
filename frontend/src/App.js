@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import firebase from 'firebase'
 import UploadForm from './components/form.js'
 import Login from './components/login'
+import Posts from "./Posts"
+import User from "./User"
+import ContentView from './components/contentView'
 
 const firebaseConfig = {
   apiKey: "AIzaSyAnHDEuW-Wv7eJ0coqtyD_UO-HtCXYir-0",
@@ -23,24 +26,67 @@ const Header = () => (
 )
 
 const App = () => {
-  const [userData, setUserData] = useState(null)
+  const [userData, setUserData] = useState(null);
+  const [postView, setPostView] = useState(false);
+  const [formView, setFormView] = useState(false);
+  const [postData, setPostData] = useState(null)
 
   const uploadMedia = (file) => {
     const imageRef = firebase.storage().ref().child(`TextBoxImages/+19172505500-${file.name}`)
     return imageRef.put(file).then(snapshot => snapshot.ref.getDownloadURL().then(url => url))
   }
-  
+
   return (
     <div>
-      <Header/>
       {!userData ? 
-        <Login getUser={setUserData} />
+        <Login getUser={(data) => setUserData(data)}/>
       :  
-      <div></div>
+      <div>
+        <Header/>
+        <div style={{display: 'flex', flexDirection: 'column', backgroundColor: '#c9c9c9', height: '100%'}}>
+          <User phoneNumber={userData.number} fileCount={userData.files.length} toggleUpload={() => setFormView(true)} upload={formView}/>
+          {formView && 
+            <div style={{position: 'absolute', left: '50%', marginLeft: -200, top: '50%', marginTop: -200}}>
+              <UploadForm uploadMedia={uploadMedia} number={userData.number} toggleFormView={() => setFormView(false)} setUpdatedData={(data) => setUserData(data)}/>
+            </div>
+          }
+          <Posts files={userData.files} 
+            toggleFileView={(data) => {
+              setPostData(data)
+              setPostView(true)
+            }}
+          />
+        </div>
+      </div>
       }
-      {console.log(userData)}
+      {postView && <ContentView body={postData} 
+        closeContentView={() => setPostView(false)}
+        setUpdatedData={(data) => setUserData(data)}
+      />}
     </div>
+
   )
+}
+
+
+const Container={
+  'flex-direction': 'column',
+  'padding-bottom': 0,
+  'padding-top': 0
+}
+
+const Row={
+  '-webkit-box-orient': 'horizontal',
+  '-webkit-box-direction': 'normal',
+  '-webkit-flex-direction': 'row',
+  '-ms-flex-direction': 'row',
+  'flex-direction': 'row',
+  'margin-bottom': 3
+}
+const Cell={
+  'display': 'block',
+  'position': 'relative',
+  'width': 100
 }
 
 export default App;

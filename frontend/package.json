@@ -6,6 +6,7 @@
     "axios": "^0.19.0",
     "firebase": "^7.0.0",
     "react": "^16.10.0",
+    "react-amazing-grid": "^1.1.0",
     "react-dom": "^16.10.0",
     "react-loading": "^2.0.3",
     "react-scripts": "3.1.2"
