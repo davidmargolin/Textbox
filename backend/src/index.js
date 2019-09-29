@@ -10,6 +10,7 @@ import mongodb from 'mongodb';
 import admin from 'firebase-admin';
 import download from 'image-downloader';
 import fetch from 'node-fetch';
+import cors from 'cors';
 
 const app = express();
 const serviceAccount = require('./keys/textbox-b83ce-firebase-adminsdk-omvws-8695d7376f.json');
@@ -39,6 +40,19 @@ if (!fs.existsSync(saveDir)) {
 
 const store = {};
 
+const whitelist = ['http://localhost:3000'];
+
+app.use(
+  cors({
+    origin: function(origin, callback) {
+      if (!origin || whitelist.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+  }),
+);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.post('/', function(req, res) {
@@ -255,13 +269,15 @@ app.post('/storeMe', function(req, res) {
             .media(store[SenderNumber].mediaSid)
             .remove()
             .then(_ => {
-              admin
+              return admin
                 .storage()
                 .bucket()
                 .upload(fullPath, {
                   destination: `TextBoxImages/${saveName}`,
                 })
                 .then(([file, response]) => {
+                  fs.unlinkSync(fullPath);
+
                   file
                     .getSignedUrl({
                       action: 'read',
@@ -294,11 +310,12 @@ app.delete('/:id', function(req, res) {
 app.put('/', function(req, res) {
   const date = new Date().valueOf();
   const { phone, name, type, data } = req.body;
+  const realName = name.trim().toLowerCase();
   collection
     .updateOne(
       {
         phone,
-        name,
+        name: realName,
       },
       {
         $set: {
@@ -306,13 +323,14 @@ app.put('/', function(req, res) {
           type,
           data,
           date,
-          name,
+          name: realName,
         },
       },
       { upsert: true },
     )
-    .then(_ => res.send()).catch(_ => res.status(400).send());
+    .then(_ => res.send())
+    .catch(_ => res.status(400).send());
 });
 
-const port = 5001;
+const port = process.env.PORT || 5001;
 app.listen(port, () => console.log(`listening on port ${port}!`));
