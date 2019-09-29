@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="472.76" height="549.889" viewBox="0 0 472.76 549.889">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#linear-gradient);
+      }
+
+      .cls-2 {
+        fill: #fff;
+        stroke: #004f80;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 8px;
+        font-size: 444px;
+        font-family: Times-Roman, Times;
+      }
+
+      .cls-3 {
+        fill: url(#linear-gradient-3);
+      }
+
+      .cls-4 {
+        fill: url(#linear-gradient-4);
+      }
+    </style>
+    <linearGradient id="linear-gradient" y1="-0.054" x2="0" y2="0.763" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#0073ba"/>
+      <stop offset="1" stop-color="#012840"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-3" y1="0.014" x2="1" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#009dff"/>
+      <stop offset="1" stop-color="#004f80"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-4" y1="0.218" x2="1.509" y2="1.071" xlink:href="#linear-gradient-3"/>
+  </defs>
+  <g id="TextBox-logo" transform="translate(841 -64.5)">
+    <path id="left-back" class="cls-1" d="M0,352.389,236.76,281V0L0,71.389Z" transform="translate(-841 191)"/>
+    <path id="right-back" class="cls-1" d="M236.76,352.389,0,281V0L236.76,71.389Z" transform="translate(-605 191)"/>
+    <text id="T" class="cls-2" transform="translate(-739.5 405.5)"><tspan x="0" y="0">T</tspan></text>
+    <path id="left-front" class="cls-3" d="M0,0,236.76,71.389v281L0,281Z" transform="translate(-841 262)"/>
+    <path id="right-front" class="cls-4" d="M236.76,0,0,71.389v281L236.76,281Z" transform="translate(-605 262)"/>
+  </g>
+</svg>
