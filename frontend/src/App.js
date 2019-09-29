@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import firebase from 'firebase'
 import UploadForm from './components/form.js'
 import Login from './components/login'
@@ -20,7 +20,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig)
 
 const Header = () => (
-  <div style={{height: 46, borderBottom: '1px solid #e3e3e3', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+  <div style={{height: '4rem', borderBottom: '1px solid #b5b5b5', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
     <input style={{padding: 4}} type='text' disabled placeholder='TextBox'/>
   </div>
 )
@@ -43,7 +43,7 @@ const App = () => {
       :  
       <div>
         <Header/>
-        <div style={{display: 'flex', flexDirection: 'column', backgroundColor: '#c9c9c9', height: '100%'}}>
+        <div style={{display: 'flex', flexDirection: 'column', backgroundColor: '#e3e3e3', height: '100vh', alignItems: 'center'}}>
           <User phoneNumber={userData.number} fileCount={userData.files.length} toggleUpload={() => setFormView(true)} upload={formView}/>
           {formView && 
             <div style={{position: 'absolute', left: '50%', marginLeft: -200, top: '50%', marginTop: -200}}>

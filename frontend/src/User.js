@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 const User = ({ phoneNumber, fileCount, toggleUpload, upload}) => (
   <div style={userStyle}>
@@ -22,12 +22,12 @@ const User = ({ phoneNumber, fileCount, toggleUpload, upload}) => (
 export default User
 
 const userStyle= {
-  marginTop: 20,
-  marginBottom: 20,
+  marginTop: '5rem',
+  marginBottom: '3rem',
   justifyContent: 'center',
   display: 'flex',
   flexDirection: 'row',
-  backgroundColor: 'white',
+  backgroundColor: '#e3e3e3',
   fontWeight: 200,
   letterSpacing: '1px'
 }
