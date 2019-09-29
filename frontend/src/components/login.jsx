@@ -14,12 +14,21 @@ export default class Login extends Component {
     this.setState({
       number: e.target.value
     });
+    console.log(this.state.number)
   };
 
   login = () => {
-    let body = {
-      number: "+1" + this.state.number
-    };
+    let body;
+    if (this.state.number[0] === "+") {
+      body = {
+        number: this.state.number
+      };
+    } else {
+      body = {
+        number: "+1" + this.state.number
+      };
+    }
+    // console.log(body)
     axios
       .post("https://b6300b89.ngrok.io/", body)
       .then(response => {
@@ -58,9 +67,7 @@ export default class Login extends Component {
             <div className="description">Please enter your phone number:</div>
             <div className="contentFooter">
               <input
-                min={0}
-                max={9999999999}
-                type="number"
+                type="text"
                 name="number"
                 placeholder="111111111"
                 className="inputNumber"

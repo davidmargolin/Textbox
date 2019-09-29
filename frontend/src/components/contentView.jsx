@@ -43,11 +43,11 @@ export default class ContentView extends Component {
   }
 
   deleteItem = () => {
-    let body = { _id: this.props.body._id };
     axios
-      .delete("/", body)
+    .delete("https://b6300b89.ngrok.io/" + this.props.body._id)
       .then(response => {
         // this.props.closeContentView
+        console.log(response)
       })
       .catch(error => {
         this.setState({
