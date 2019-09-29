@@ -37,13 +37,13 @@ const App = () => {
   }
 
   return (
-    <div>
+    <div style={{height: '100%'}}>
       {!userData ? 
         <Login getUser={(data) => setUserData(data)}/>
       :  
-      <div>
+      <div style={{height: '100%'}}>
         <Header/>
-        <div style={{display: 'flex', flexDirection: 'column', backgroundColor: '#e3e3e3', height: '100vh', alignItems: 'center'}}>
+        <div style={{display: 'flex', height: '100%', flexDirection: 'column', backgroundColor: '#e3e3e3', flex: 1, alignItems: 'center', flexShrink: 0}}>
           <User phoneNumber={userData.number} fileCount={userData.files.length} toggleUpload={() => setFormView(true)} upload={formView}/>
           {formView && 
             <div style={{position: 'absolute', left: '50%', marginLeft: -200, top: '50%', marginTop: -200}}>
