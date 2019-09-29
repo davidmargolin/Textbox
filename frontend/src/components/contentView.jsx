@@ -43,11 +43,15 @@ export default class ContentView extends Component {
   }
 
   deleteItem = () => {
-    let body = { _id: this.props.body._id };
     axios
-      .delete("/", body)
+    .delete("https://textbox2020.herokuapp.com/" + this.props.body._id)
       .then(response => {
-        // this.props.closeContentView
+        axios
+        .post("https://textbox2020.herokuapp.com/", {number: this.props.body.phone})
+        .then(response => {
+          this.props.setUpdatedData({files: response.data, number: this.props.body.phone})
+          this.props.closeContentView()
+        })
       })
       .catch(error => {
         this.setState({
@@ -87,7 +91,7 @@ export default class ContentView extends Component {
     return (
       <div className="contentViewWrapperBackground">
         <div className="contentViewWrapper">
-          <button className="closeBtn" onClick={this.props.closeContentView}>
+          <button className="closeBtn" onClick={() => this.props.closeContentView()}>
             X
           </button>
           <div className="content">{content}</div>

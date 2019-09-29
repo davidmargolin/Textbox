@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import ReactLoading from 'react-loading'
 
-const UploadForm = ({uploadMedia}) => {
+const UploadForm = ({ uploadMedia, number, toggleFormView, setUpdatedData }) => {
     const [type, setType] = useState('text')
     const [text, setText] = useState('')
     const [media, setMedia] = useState(null)
@@ -32,14 +32,13 @@ const UploadForm = ({uploadMedia}) => {
                 })
             }
             if(media && title != "") {
-                console.log('no errors')
                 uploadMedia(media).then(url => {
                     setLoading(true)
-                    fetch('https://b6300b89.ngrok.io/', {
+                    fetch('https://textbox2020.herokuapp.com/', {
                         method: 'PUT',
                         headers: {'Content-Type': 'application/json'},
                         body: JSON.stringify({
-                            phone: '+19172505500',
+                            phone: number,
                             type: 'media',
                             data: url,
                             name: title
@@ -47,7 +46,20 @@ const UploadForm = ({uploadMedia}) => {
                     }).then(res => {
                         setLoading(false)
                         res.status == 200 ? setResponse('Success!') : setResponse('Failed to upload.')
-                        setTimeout(() => window.location.reload(true), 2000)
+
+                        fetch('https://textbox2020.herokuapp.com/', {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify({
+                                number
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+
+                                setUpdatedData(({files: data, number}))
+                                toggleFormView()
+                        })
                     })
                 })
             }
@@ -64,11 +76,11 @@ const UploadForm = ({uploadMedia}) => {
             }
             if(title != '' && text != '') {
                 setLoading(true)
-                fetch('https://b6300b89.ngrok.io/', {
+                fetch('https://textbox2020.herokuapp.com/', {
                     method: 'PUT',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({
-                        phone: '+19172505500',
+                        phone: number,
                         type: 'text',
                         data: text,
                         name: title
@@ -76,16 +88,30 @@ const UploadForm = ({uploadMedia}) => {
                     }).then(res => {
                         setLoading(false)
                         res.status == 200 ? setResponse('Success!') : setResponse('Failed to upload.')
-                        setTimeout(() => window.location.reload(true), 2000)
-                    })
-            }
+
+                        fetch('https://textbox2020.herokuapp.com/', {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify({
+                                number
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+
+                                toggleFormView()
+                                setUpdatedData(({files: data, number}))
+
+                        })
+            })  }
         }
     }
 
     return (
-        <div style={{border: '1px solid #e3e3e3', height: 400, width: 400, display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative'}}>
+        <div className="contentViewWrapperBackground">
+        <div style={{border: '1px solid #e3e3e3', height: 400, width: 400, display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative', backgroundColor: 'white'}}>
             <div>
-                <input style={{width: '', border: 'none', height: 30, borderBottom: '2px solid #e1e1e1', padding: 4, fontSize: '1.2em', outline: 'none'}}
+                <input style={{width: '', border: 'none', height: 30, borderBottom: '2px solid #e1e1e1', padding: 4, fontSize: '1.2em', outline: 'none', marginTop: 4}}
                     placeholder='File Name'
                     value={title}
                     onChange={(e) => {
@@ -151,12 +177,12 @@ const UploadForm = ({uploadMedia}) => {
             }
             {
                 !loading && response == '' ?
-                <div style={{position: 'absolute', bottom: 10, right: 10}}>
-                    <a style={{margin: 4, width: 75, height: 30, borderStyle: 'none', backgroundColor: 'white', cursor: 'pointer', color: 'grey', fontSize: 16, padding: 4, textDecoration: 'none'}}
-                        href='/'
+                <div style={{position: 'absolute', bottom: 10, right: 10, display: 'flex'}}>
+                    <div style={{margin: 4, width: 75, height: 30, borderStyle: 'none', backgroundColor: 'white', cursor: 'pointer', color: 'grey', fontSize: 16, padding: 4, textDecoration: 'none'}}
+                        onClick={() => toggleFormView()}
                     >
                         Cancel
-                    </a>
+                    </div>
                     <button style={{margin: 4, width: 75, height: 30, borderStyle: 'none', borderRadius: 25, backgroundColor: '#5cc0ff', border: '2px solid #5cc0ff', cursor: 'pointer', color: 'white', fontSize: 16, padding: 4}}
                         onClick={() => upload()}
                     >
@@ -170,6 +196,7 @@ const UploadForm = ({uploadMedia}) => {
                 </div>
                 : <div style={{fontSize: '1.1em', color: '#5cc0ff'}}>{response}</div>
             }
+        </div>
         </div>
     )
 }

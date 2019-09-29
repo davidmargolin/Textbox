@@ -8,8 +8,6 @@ export default class Login extends Component {
     this.state = {};
   }
 
-  componentDidMount() {}
-
   update = e => {
     this.setState({
       number: e.target.value
@@ -17,15 +15,24 @@ export default class Login extends Component {
   };
 
   login = () => {
-    let body = {
-      number: "+1" + this.state.number
-    };
+    let body;
+    if (this.state.number[0] === "+") {
+      body = {
+        number: this.state.number
+      };
+    } else {
+      body = {
+        number: "+1" + this.state.number
+      };
+    }
+    // console.log(body)
     axios
-      .post("https://b6300b89.ngrok.io/", body)
+      .post("https://textbox2020.herokuapp.com/", body)
       .then(response => {
-        console.log(response); // FUNCTION PASSING DOWN HERE
+        this.props.getUser({files: response.data, ...body})
       })
       .catch(error => {
+        console.log(error)
         this.setState({
           error: error
         });
@@ -58,9 +65,7 @@ export default class Login extends Component {
             <div className="description">Please enter your phone number:</div>
             <div className="contentFooter">
               <input
-                min={0}
-                max={9999999999}
-                type="number"
+                type="text"
                 name="number"
                 placeholder="111111111"
                 className="inputNumber"
