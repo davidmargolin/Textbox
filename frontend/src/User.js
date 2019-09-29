@@ -3,7 +3,7 @@ import React from 'react';
 const User = ({ phoneNumber, fileCount, toggleUpload, upload}) => (
   <div style={userStyle}>
     <div style={{display: 'flex'}}>
-      <img style={{height: 100, borderRadius: 50, objectFit: 'contain'}} src="https://uploads-ssl.webflow.com/5cbf13accf61ec22cf027807/5cbf368fd41e94bb5b08bfba_avatar-4.png"/>
+      <img style={{height: 100, borderRadius: 50, objectFit: 'contain', marginRight: 75}} src="https://uploads-ssl.webflow.com/5cbf13accf61ec22cf027807/5cbf368fd41e94bb5b08bfba_avatar-4.png"/>
       <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
         <div style={{display: 'flex'}}>
           <h4 style={{marginLeft: 30}}>{phoneNumber}</h4>
