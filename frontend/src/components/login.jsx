@@ -8,8 +8,6 @@ export default class Login extends Component {
     this.state = {};
   }
 
-  componentDidMount() {}
-
   update = e => {
     this.setState({
       number: e.target.value
@@ -21,9 +19,9 @@ export default class Login extends Component {
       number: "+1" + this.state.number
     };
     axios
-      .post("https://b6300b89.ngrok.io/", body)
+      .post("https://textbox2020.herokuapp.com/", body)
       .then(response => {
-        console.log(response); // FUNCTION PASSING DOWN HERE
+        this.props.getUser(response.data)
       })
       .catch(error => {
         this.setState({

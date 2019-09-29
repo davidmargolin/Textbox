@@ -35,7 +35,7 @@ const UploadForm = ({uploadMedia}) => {
                 console.log('no errors')
                 uploadMedia(media).then(url => {
                     setLoading(true)
-                    fetch('https://b6300b89.ngrok.io/', {
+                    fetch('https://textbox2020.herokuapp.com/', {
                         method: 'PUT',
                         headers: {'Content-Type': 'application/json'},
                         body: JSON.stringify({
@@ -64,7 +64,7 @@ const UploadForm = ({uploadMedia}) => {
             }
             if(title != '' && text != '') {
                 setLoading(true)
-                fetch('https://b6300b89.ngrok.io/', {
+                fetch('https://textbox2020.herokuapp.com/', {
                     method: 'PUT',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import firebase from 'firebase'
 import UploadForm from './components/form.js'
+import Login from './components/login'
 
 const firebaseConfig = {
   apiKey: "AIzaSyAnHDEuW-Wv7eJ0coqtyD_UO-HtCXYir-0",
@@ -22,6 +23,7 @@ const Header = () => (
 )
 
 const App = () => {
+  const [userData, setUserData] = useState(null)
 
   const uploadMedia = (file) => {
     const imageRef = firebase.storage().ref().child(`TextBoxImages/+19172505500-${file.name}`)
@@ -31,6 +33,12 @@ const App = () => {
   return (
     <div>
       <Header/>
+      {!userData ? 
+        <Login getUser={setUserData} />
+      :  
+      <div></div>
+      }
+      {console.log(userData)}
     </div>
   )
 }
