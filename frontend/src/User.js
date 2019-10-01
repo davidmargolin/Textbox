@@ -27,7 +27,8 @@ const User = ({ fileCount, toggleUpload, upload }) => (
             padding: 0,
             color: "#069",
             textDecoration: "underline",
-            cursor: "pointer"
+            cursor: "pointer",
+            margin: 6
           }}
           onClick={() => firebase.auth().signOut()}
         >
