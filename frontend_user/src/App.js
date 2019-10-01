@@ -48,6 +48,7 @@ const App = () => {
   const [userData, setUserData] = useState(null);
   const [formView, setFormView] = useState(false);
   const [postData, setPostData] = useState(null);
+  const [status, setStatus] = useState(-1);
 
   const uploadMedia = file => {
     const imageRef = firebase
@@ -109,17 +110,9 @@ const App = () => {
   };
 
   useEffect(() => {
-    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
-      "sign-in-button",
-      {
-        size: "invisible",
-        callback: function(response) {}
-      }
-    );
-
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
-        setUserData([])
+        setUserData([]);
         user.getIdToken().then(token => {
           fetch("https://textbox2020.herokuapp.com/", {
             headers: {
@@ -129,22 +122,35 @@ const App = () => {
             .then(response => response.json())
             .then(data => {
               setUserData(data);
+              setStatus(1);
             });
         });
-      }else{
-        setUserData(null)
+      } else {
+        setUserData(null);
+        setStatus(0);
+        window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
+          "sign-in-button",
+          {
+            size: "invisible",
+            callback: function(response) {}
+          }
+        );
       }
     });
   }, []);
 
-  return (
-    <div style={{ height: "100%" }}>
-      {!userData ? (
-        <>
-          <div id="sign-in-button" />
-          <Login />
-        </>
-      ) : (
+  if (status === -1) {
+    return <div>Loading...</div>;
+  } else if (status === 0) {
+    return (
+      <div style={{ height: "100%" }}>
+        <div id="sign-in-button" />
+        <Login />
+      </div>
+    );
+  } else
+    return (
+      <div style={{ height: "100%" }}>
         <div style={{ height: "100%" }}>
           <Header />
           <div
@@ -188,18 +194,17 @@ const App = () => {
             />
           </div>
         </div>
-      )}
-      {postData && (
-        <ContentView
-          body={postData}
-          closeContentView={() => {
-            setPostData(null);
-          }}
-          deleteItem={() => deleteItem(postData._id)}
-        />
-      )}
-    </div>
-  );
+        {postData && (
+          <ContentView
+            body={postData}
+            closeContentView={() => {
+              setPostData(null);
+            }}
+            deleteItem={() => deleteItem(postData._id)}
+          />
+        )}
+      </div>
+    );
 };
 
 export default App;

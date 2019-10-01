@@ -9,7 +9,7 @@ export default class Login extends Component {
       number: "",
       error: null,
       waitingForCode: false,
-      disabled: false,
+      disabled: false
     };
   }
 
@@ -29,7 +29,11 @@ export default class Login extends Component {
             window.recaptchaVerifier
           )
           .then(confirmationResult => {
-            this.setState({ number: "", waitingForCode: true, disabled: false });
+            this.setState({
+              number: "",
+              waitingForCode: true,
+              disabled: false
+            });
             window.confirmationResult = confirmationResult;
           })
           .catch(error => {
@@ -42,16 +46,23 @@ export default class Login extends Component {
   };
 
   submitCode = () => {
-    this.setState(
-      { number: "", error: null, waitingForCode: false, locked: false, disabled: true },
-      () => {
-        const credential = firebase.auth.PhoneAuthProvider.credential(
-          window.confirmationResult.verificationId,
-          this.state.number
+    this.setState({ error: null, disabled: true }, () => {
+      const credential = firebase.auth.PhoneAuthProvider.credential(
+        window.confirmationResult.verificationId,
+        this.state.number
+      );
+      firebase
+        .auth()
+        .signInWithCredential(credential)
+        .catch(err =>
+          this.setState({
+            disabled: false,
+            error: err.message,
+            number: "",
+            waitingForCode: false
+          })
         );
-        firebase.auth().signInWithCredential(credential).catch(err => this.setState({disabled: false, error: err.message}));
-      }
-    );
+    });
   };
 
   render() {
@@ -71,7 +82,9 @@ export default class Login extends Component {
           }}
         >
           <h4>
-          {this.state.disabled?"Loading...":this.state.waitingForCode
+            {this.state.disabled
+              ? "Loading..."
+              : this.state.waitingForCode
               ? "Enter Confirmation Code"
               : "Enter Your 10 Digit Phone Number"}
           </h4>
@@ -96,7 +109,7 @@ export default class Login extends Component {
               marginTop: "1.5rem",
               outline: "none",
               border: "1px solid #5cc0ff",
-              backgroundColor: this.state.disabled?"lightgray":"#5cc0ff",
+              backgroundColor: this.state.disabled ? "lightgray" : "#5cc0ff",
               height: "2.5em",
               width: "14rem",
               borderRadius: 25,

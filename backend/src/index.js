@@ -86,7 +86,7 @@ app.post('/storeMe', function(req, res) {
   const { body } = req;
   const { From: SenderNumber, MessageSid, Body, NumMedia } = body;
 
-  if (Body.trim().toLowerCase() === 'help' || Body.trim().toLowerCase() === 'store') {
+  if (Body.trim().toLowerCase() === 'help' || Body.trim().toLowerCase() === 'save') {
     res.end();
   } else if (Body.trim().toLowerCase() === 'list') {
     collection

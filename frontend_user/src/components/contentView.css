@@ -22,7 +22,6 @@ html, body {
 .contentViewWrapper {
   position: relative;
   width: 50rem;
-  height: fit-content;
   border: none;
   border-radius: 0.2em;
   background-color: rgb(226, 226, 226);
