@@ -40,7 +40,11 @@ if (!fs.existsSync(saveDir)) {
 
 const store = {};
 
-const whitelist = ['http://localhost:3000'];
+const whitelist = [
+  'http://localhost:3000',
+  'https://neverrunoutof.space',
+  'https://textbox-b83ce.firebaseapp.com',
+];
 
 app.use(
   cors({
@@ -48,6 +52,7 @@ app.use(
       if (!origin || whitelist.indexOf(origin) !== -1) {
         callback(null, true);
       } else {
+        console.log(origin);
         callback(new Error('Not allowed by CORS'));
       }
     },
@@ -55,17 +60,26 @@ app.use(
 );
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.post('/', function(req, res) {
-  const { number } = req.body;
-  collection
-    .find({
-      phone: number,
-    })
-    .sort({ date: 1 })
-    .toArray()
-    .then(data => {
-      res.send(data);
-    });
+app.get('/', function(req, res) {
+  admin
+    .auth()
+    .verifyIdToken(req.headers.authorization)
+    .then(user =>
+      admin
+        .auth()
+        .getUser(user.uid)
+        .then(user =>
+          collection
+            .find({
+              phone: user.phoneNumber,
+            })
+            .sort({ date: 1 })
+            .toArray()
+            .then(data => {
+              res.send(data);
+            }),
+        ),
+    );
 });
 
 app.post('/storeMe', function(req, res) {
@@ -79,7 +93,7 @@ app.post('/storeMe', function(req, res) {
       .find({
         phone: SenderNumber,
       })
-      .sort({ date: 1 })
+      .sort({ date: -1 })
       .limit(10)
       .toArray()
       .then(data => {
@@ -242,7 +256,7 @@ app.post('/storeMe', function(req, res) {
         .then(_ => {
           store[SenderNumber] = null;
           fetch(
-            `https://api.giphy.com/v1/gifs/random?api_key=${process.env.GIPHY}&tag=good`,
+            `https://api.giphy.com/v1/gifs/random?api_key=${process.env.GIPHY}&tag=celebrate`,
           )
             .then(response => response.json())
             .then(({ data }) => {
@@ -302,35 +316,62 @@ app.post('/storeMe', function(req, res) {
 });
 
 app.delete('/:id', function(req, res) {
-  collection
-    .deleteOne({ _id: mongodb.ObjectId(req.params.id) })
-    .then(_ => res.send());
+  admin
+    .auth()
+    .verifyIdToken(req.headers.authorization)
+    .then(user =>
+      admin
+        .auth()
+        .getUser(user.uid)
+        .then(user =>
+          collection
+            .deleteOne({
+              _id: mongodb.ObjectId(req.params.id),
+              phone: user.phoneNumber,
+            })
+            .then(_ => res.send()),
+        ),
+    );
 });
 
 app.put('/', function(req, res) {
-  const date = new Date().valueOf();
-  const { phone, name, type, data } = req.body;
-  const realName = name.trim().toLowerCase();
-  collection
-    .updateOne(
-      {
-        phone,
-        name: realName,
-      },
-      {
-        $set: {
-          phone,
-          type,
-          data,
-          date,
-          name: realName,
-        },
-      },
-      { upsert: true },
-    )
-    .then(_ => res.send())
-    .catch(_ => res.status(400).send());
+  admin
+    .auth()
+    .verifyIdToken(req.headers.authorization)
+    .then(user =>
+      admin
+        .auth()
+        .getUser(user.uid)
+        .then(user => {
+          const date = new Date().valueOf();
+          const { name, type, data } = req.body;
+          const realName = name.trim().toLowerCase();
+          return collection
+            .updateOne(
+              {
+                phone: user.phoneNumber,
+                name: realName,
+              },
+              {
+                $set: {
+                  phone: user.phoneNumber,
+                  type,
+                  data,
+                  date,
+                  name: realName,
+                },
+              },
+              { upsert: true },
+            )
+            .then(_ => res.send())
+            .catch(_ => res.status(400).send());
+        }),
+    );
 });
 
-const port = process.env.PORT || 5001;
-app.listen(port, () => console.log(`listening on port ${port}!`));
+mongoClient.connect(err => {
+  if (err) throw err;
+  collection = mongoClient.db('textbox').collection('textbox');
+  const port = process.env.PORT || 5001;
+  app.listen(port, () => console.log(`listening on port ${port}!`));
+});

@@ -1,9 +1,13 @@
 logfile
 
-.env
 
 node_modules/
 
-keys/
 
 savedImages/
+
+dist/
+
+.env
+
+keys/
