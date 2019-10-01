@@ -11,7 +11,8 @@ const User = ({ fileCount, toggleUpload, upload }) => (
           minWidth: 300,
           display: "flex",
           justifyContent: "center",
-          flexDirection: "column"
+          flexDirection: "column",
+          alignItems: "center"
         }}
       >
         <img
@@ -19,6 +20,19 @@ const User = ({ fileCount, toggleUpload, upload }) => (
           style={{ height: 100, borderRadius: 50, objectFit: "contain" }}
           src="https://uploads-ssl.webflow.com/5cbf13accf61ec22cf027807/5cbf368fd41e94bb5b08bfba_avatar-4.png"
         />
+        <button
+          style={{
+            background: "none",
+            border: "none",
+            padding: 0,
+            color: "#069",
+            textDecoration: "underline",
+            cursor: "pointer"
+          }}
+          onClick={() => firebase.auth().signOut()}
+        >
+          Log Out
+        </button>
       </div>
       <div
         style={{
@@ -68,6 +82,5 @@ const userStyle = {
   display: "flex",
   flexDirection: "row",
   backgroundColor: "#e3e3e3",
-  fontWeight: 200,
   letterSpacing: "1px"
 };

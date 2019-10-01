@@ -8,7 +8,8 @@ export default class Login extends Component {
     this.state = {
       number: "",
       error: null,
-      waitingForCode: false
+      waitingForCode: false,
+      disabled: false,
     };
   }
 
@@ -19,7 +20,7 @@ export default class Login extends Component {
   };
 
   login = () => {
-    this.setState({ error: null }, () => {
+    this.setState({ error: null, disabled: true }, () => {
       if (this.state.number.length === 10) {
         firebase
           .auth()
@@ -28,25 +29,31 @@ export default class Login extends Component {
             window.recaptchaVerifier
           )
           .then(confirmationResult => {
-            this.setState({ number: "", waitingForCode: true });
+            this.setState({ number: "", waitingForCode: true, disabled: false });
             window.confirmationResult = confirmationResult;
           })
           .catch(error => {
-            this.setState({ error: JSON.stringify(error) });
+            this.setState({ error: error.message, disabled: false });
           });
       } else {
-        this.setState({ error: "Enter a valid number" });
+        this.setState({ error: "Enter a valid number", disabled: false });
       }
     });
   };
 
   submitCode = () => {
-    this.setState({ error: null }, () => {
-      const credential = firebase.auth.PhoneAuthProvider.credential(window.confirmationResult.verificationId, this.state.number);
-      firebase.auth().signInWithCredential(credential);
-    });
+    this.setState(
+      { number: "", error: null, waitingForCode: false, locked: false, disabled: true },
+      () => {
+        const credential = firebase.auth.PhoneAuthProvider.credential(
+          window.confirmationResult.verificationId,
+          this.state.number
+        );
+        firebase.auth().signInWithCredential(credential).catch(err => this.setState({disabled: false, error: err.message}));
+      }
+    );
   };
-  
+
   render() {
     return (
       <div className="contentViewWrapperBackground">
@@ -64,7 +71,7 @@ export default class Login extends Component {
           }}
         >
           <h4>
-            {this.state.waitingForCode
+          {this.state.disabled?"Loading...":this.state.waitingForCode
               ? "Enter Confirmation Code"
               : "Enter Your 10 Digit Phone Number"}
           </h4>
@@ -75,11 +82,12 @@ export default class Login extends Component {
           )}
           <input
             name="number"
-            placeholder={this.state.waitingForCode?"555555":"5555555555"}
+            placeholder={this.state.waitingForCode ? "555555" : "5555555555"}
             onChange={e =>
               e.target.value.length <= 10 &&
               this.setState({ number: e.target.value })
             }
+            disabled={this.state.disabled}
             value={this.state.number}
             className="inputNumber"
           />
@@ -88,12 +96,13 @@ export default class Login extends Component {
               marginTop: "1.5rem",
               outline: "none",
               border: "1px solid #5cc0ff",
-              backgroundColor: "#5cc0ff",
+              backgroundColor: this.state.disabled?"lightgray":"#5cc0ff",
               height: "2.5em",
               width: "14rem",
               borderRadius: 25,
               cursor: "pointer"
             }}
+            disabled={this.state.disabled}
             onClick={() =>
               this.state.waitingForCode ? this.submitCode() : this.login()
             }

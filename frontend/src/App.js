@@ -119,6 +119,7 @@ const App = () => {
 
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
+        setUserData([])
         user.getIdToken().then(token => {
           fetch("https://textbox2020.herokuapp.com/", {
             headers: {
@@ -130,6 +131,8 @@ const App = () => {
               setUserData(data);
             });
         });
+      }else{
+        setUserData(null)
       }
     });
   }, []);
