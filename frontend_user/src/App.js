@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import firebase from "firebase";
+import firebase from "firebase/app";
+import "firebase/auth";
 import UploadForm from "./components/form.js";
 import Login from "./components/login";
 import Posts from "./Posts";
@@ -170,7 +171,7 @@ const App = () => {
     });
   }, []);
 
-  if (status == -1) {
+  if (status === -1) {
     return <h3 style={{ color: "white", textAlign: "center" }}>Loading...</h3>;
   } else if (status === 0) {
     return (

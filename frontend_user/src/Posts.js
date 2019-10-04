@@ -5,8 +5,19 @@ import MediaFilePreview from "./components/media-file-preview";
 const Posts = ({ files, toggleFileView, upload, toggleUpload }) => {
   return (
     <div style={{ maxWidth: "64rem", padding: "0.5rem" }}>
-      <span style={{flex:1, display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', marginTop: 16}}>
-        <h3 style={{ color: "white", margin: 12 }}>{files.length == 1? "1 File": `${files.length} Files`}</h3>
+      <span
+        style={{
+          flex: 1,
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginTop: 16
+        }}
+      >
+        <h3 style={{ color: "white", margin: 12 }}>
+          {files.length === 1 ? "1 File" : `${files.length} Files`}
+        </h3>
         {!upload && (
           <button
             style={{
@@ -38,9 +49,17 @@ const Posts = ({ files, toggleFileView, upload, toggleUpload }) => {
       >
         {files.map(file =>
           file.type === "text" ? (
-            <TextFilePreview file={file} toggle={toggleFileView} />
+            <TextFilePreview
+              key={file.name}
+              file={file}
+              toggle={toggleFileView}
+            />
           ) : (
-            <MediaFilePreview file={file} toggle={toggleFileView} />
+            <MediaFilePreview
+              key={file.name}
+              file={file}
+              toggle={toggleFileView}
+            />
           )
         )}
       </div>

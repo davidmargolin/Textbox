@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./contentView.css";
-import firebase from "firebase";
+import firebase from "firebase/app";
+import "firebase/auth";
 
 export default class Login extends Component {
   constructor(props) {

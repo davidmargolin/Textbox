@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
 }
@@ -21,7 +22,7 @@ html, body {
 
 .contentViewWrapper {
   position: relative;
-  max-width: 50rem;
+  max-width: 80%;
   min-width: 20rem;
   border: none;
   border-radius: 0.2em;
@@ -34,8 +35,8 @@ html, body {
 .image {
   max-width: 100%;
   max-height: 100%;
-  min-width: 30rem;
-  min-height: 30rem;
+  min-width: 20rem;
+  min-height: 20rem;
   margin: auto;
 }
 
@@ -43,7 +44,7 @@ html, body {
   margin: 0.2em;
   padding: 0.2em;
   color: white;
-  font-family: 'Source Code Pro', monospace;
+  font-family: "Source Code Pro", monospace;
   background-color: black;
   border-radius: 0.2em;
   height: 92%;
@@ -82,7 +83,8 @@ html, body {
   right: -0.5rem;
 }
 
-.closeBtn:hover, .closeBtnSmall:hover {
+.closeBtn:hover,
+.closeBtnSmall:hover {
   cursor: pointer;
   background-color: rgb(255, 0, 0);
 }
@@ -147,13 +149,13 @@ html, body {
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-    /* display: none; <- Crashes Chrome on hover */
-    -webkit-appearance: none;
-    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+  /* display: none; <- Crashes Chrome on hover */
+  -webkit-appearance: none;
+  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }
 
-input[type=number] {
-    -moz-appearance:textfield; /* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield; /* Firefox */
 }
 
 .inputNumber {
@@ -166,11 +168,12 @@ input[type=number] {
   padding: 1rem;
   height: 0.2rem;
   width: 14rem;
-  margin-top: 1rem
+  margin-top: 1rem;
 }
 
-.inputNumber:hover, .inputNumber:focus {
-  border: 1px solid #5cc0ff
+.inputNumber:hover,
+.inputNumber:focus {
+  border: 1px solid #5cc0ff;
 }
 
 .loginContent {
