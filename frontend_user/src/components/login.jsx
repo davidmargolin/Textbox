@@ -73,15 +73,20 @@ export default class Login extends Component {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            border: "1px solid #b5b5b5",
+            border: "1px solid #333333",
             height: "fit-content",
             width: "18em",
-            backgroundColor: "white",
             borderRadius: 8,
-            padding: "0.5em"
+            padding: "1em"
           }}
         >
-          <h4>
+          <h2 style={{ color: "white" }}>Log In To TextBox</h2>
+          <img
+            alt="Textbox logo"
+            src="/logo.png"
+            style={{ padding: 4, height: 70, marginRight: 16 }}
+          />
+          <h4 style={{ color: "white" }}>
             {this.state.disabled
               ? "Loading..."
               : this.state.waitingForCode
@@ -93,20 +98,28 @@ export default class Login extends Component {
               <div style={{ color: "red" }}>{this.state.error}</div>
             </div>
           )}
-          <input
-            name="number"
-            placeholder={this.state.waitingForCode ? "555555" : "5555555555"}
-            onChange={e =>
-              e.target.value.length <= 10 &&
-              this.setState({ number: e.target.value })
-            }
-            disabled={this.state.disabled}
-            value={this.state.number}
-            className="inputNumber"
-          />
+          <form
+            action="#"
+            onSubmit={() => {
+              this.state.waitingForCode ? this.submitCode() : this.login();
+            }}
+          >
+            <input
+              name="number"
+              placeholder={this.state.waitingForCode ? "555555" : "5555555555"}
+              onChange={e =>
+                e.target.value.length <= 10 &&
+                this.setState({ number: e.target.value })
+              }
+              disabled={this.state.disabled}
+              value={this.state.number}
+              className="inputNumber"
+            />
+          </form>
+
           <button
             style={{
-              marginTop: "1.5rem",
+              margin: "1.5rem",
               outline: "none",
               border: "1px solid #5cc0ff",
               backgroundColor: this.state.disabled ? "lightgray" : "#5cc0ff",

@@ -11,7 +11,7 @@ html, body {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #555555cc;
+  background-color: #222222;
   display: flex;
   flex-flow: column;
   justify-content: center;
@@ -21,32 +21,37 @@ html, body {
 
 .contentViewWrapper {
   position: relative;
-  width: 50rem;
+  max-width: 50rem;
+  min-width: 20rem;
   border: none;
   border-radius: 0.2em;
-  background-color: rgb(226, 226, 226);
+  background-color: #111111;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
   scroll-behavior: auto;
   top: 0;
 }
 
 .image {
-  width: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  min-width: 30rem;
+  min-height: 30rem;
   margin: auto;
 }
 
 .text {
   margin: 0.2em;
   padding: 0.2em;
+  color: white;
   font-family: 'Source Code Pro', monospace;
-  background-color: white;
+  background-color: black;
   border-radius: 0.2em;
   height: 92%;
   margin-top: 0.2em;
 }
 
 .closeBtn {
-  background-color: rgb(187, 187, 187);
+  background-color: #333333;
   height: 1.5rem;
   width: 1.5rem;
   margin: 0;
@@ -83,7 +88,7 @@ html, body {
 }
 
 .deleteBtn {
-  background-color: rgb(255, 255, 255);
+  background-color: #111111;
   color: red;
   border: none;
   border-radius: 0.2rem;
@@ -101,6 +106,7 @@ html, body {
 }
 
 .name {
+  color: white;
   width: 100%;
   margin-left: 0.2em;
   text-align: right;
@@ -153,12 +159,14 @@ input[type=number] {
 .inputNumber {
   /* margin: auto; */
   outline: none;
-  border: 1px solid #e3e3e3;
+  border: 1px solid #333333;
   border-radius: 25px;
+  background-color: #333333;
+  color: white;
   padding: 1rem;
   height: 0.2rem;
   width: 14rem;
-  margin-top: 2rem
+  margin-top: 1rem
 }
 
 .inputNumber:hover, .inputNumber:focus {

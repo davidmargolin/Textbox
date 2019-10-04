@@ -3,7 +3,6 @@ import firebase from "firebase";
 import UploadForm from "./components/form.js";
 import Login from "./components/login";
 import Posts from "./Posts";
-import User from "./User";
 import ContentView from "./components/contentView";
 
 const firebaseConfig = {
@@ -22,25 +21,57 @@ firebase.initializeApp(firebaseConfig);
 const Header = () => (
   <div
     style={{
-      borderBottom: "1px solid #b5b5b5",
+      width: "100%",
+      maxWidth: "64rem",
       justifyContent: "space-between",
       flex: 1,
+      flexGrow: 1,
       display: "flex",
       alignItems: "center",
       paddingTop: 18,
-      paddingBottom: 18,
-      paddingRight: 16,
-      paddingLeft: 16
+      backgroundColor: "#111111"
     }}
   >
-    <img
-      alt="Textbox logo"
-      src="/logo.png"
-      style={{ padding: 4, height: 50, marginRight: 16 }}
-    />
-    <a href="sms://+12055649506">
-      <h3>Get started by texting 'help' to (205) 564-9506</h3>
-    </a>
+    <div
+      style={{ display: "flex", flexDirection: "row", alignItems: "center" }}
+    >
+      <img
+        alt="Textbox logo"
+        src="/logo.png"
+        style={{ padding: 4, height: 50, marginRight: 16 }}
+      />
+      <span>
+        <h3 style={{ color: "white", margin: 0 }}>TextBox</h3>
+        <a href="sms://+12055649506" style={{ color: "white" }}>
+          <h4 style={{ marginTop: 4, marginBottom: 0 }}>(205) 564-9506</h4>
+        </a>
+      </span>
+    </div>
+    <div
+      style={{
+        justifyContent: "flex-end",
+        display: "flex",
+        flexDirection: "column"
+      }}
+    >
+      <h4 style={{ color: "white", margin: 0 }}>
+        {firebase.auth().currentUser.phoneNumber}
+      </h4>
+      <button
+        style={{
+          textAlign: "end",
+          background: "none",
+          border: "none",
+          padding: 0,
+          color: "red",
+          textDecoration: "underline",
+          cursor: "pointer"
+        }}
+        onClick={() => firebase.auth().signOut()}
+      >
+        Log Out
+      </button>
+    </div>
   </div>
 );
 
@@ -126,8 +157,8 @@ const App = () => {
             });
         });
       } else {
-        setUserData(null);
         setStatus(0);
+        setUserData(null);
         window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
           "sign-in-button",
           {
@@ -139,8 +170,8 @@ const App = () => {
     });
   }, []);
 
-  if (status === -1) {
-    return <div>Loading...</div>;
+  if (status == -1) {
+    return <h3 style={{ color: "white", textAlign: "center" }}>Loading...</h3>;
   } else if (status === 0) {
     return (
       <div style={{ height: "100%" }}>
@@ -150,25 +181,28 @@ const App = () => {
     );
   } else
     return (
-      <div style={{ height: "100%" }}>
-        <div style={{ height: "100%" }}>
+      <div style={{ height: "100%", backgroundColor: "#111111" }}>
+        <div
+          style={{
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+            flexDirection: "column",
+            marginLeft: 12,
+            marginRight: 12
+          }}
+        >
           <Header />
           <div
             style={{
               display: "flex",
               minHeight: window.innerHeight - 100,
               flexDirection: "column",
-              backgroundColor: "#e3e3e3",
               flex: 1,
               justifyContent: "center",
               alignItems: "center"
             }}
           >
-            <User
-              fileCount={userData.length}
-              toggleUpload={() => setFormView(true)}
-              upload={formView}
-            />
             {formView && (
               <div
                 style={{
@@ -191,6 +225,8 @@ const App = () => {
               toggleFileView={data => {
                 setPostData(data);
               }}
+              toggleUpload={() => setFormView(true)}
+              upload={formView}
             />
           </div>
         </div>

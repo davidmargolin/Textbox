@@ -4,7 +4,7 @@ import firebase from "firebase";
 const User = ({ fileCount, toggleUpload, upload }) => (
   <div style={userStyle}>
     <div
-      style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}
+      style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", alignItems: 'center' }}
     >
       <div
         style={{
@@ -25,7 +25,7 @@ const User = ({ fileCount, toggleUpload, upload }) => (
             background: "none",
             border: "none",
             padding: 0,
-            color: "#069",
+            color: "white",
             textDecoration: "underline",
             cursor: "pointer",
             margin: 6
@@ -44,8 +44,8 @@ const User = ({ fileCount, toggleUpload, upload }) => (
         }}
       >
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <h4>{firebase.auth().currentUser.phoneNumber}</h4>
-          <h4 style={{ marginTop: 0, paddingTop: 0 }}>
+          <h4 style={{color: 'white'}}>{firebase.auth().currentUser.phoneNumber}</h4>
+          <h4 style={{ marginTop: 0, paddingTop: 0, color: 'white'}}>
             {fileCount === 1 ? "1 File" : `${fileCount} Files`}
           </h4>
         </div>
@@ -54,13 +54,13 @@ const User = ({ fileCount, toggleUpload, upload }) => (
             style={{
               margin: 4,
               width: 140,
-              height: 30,
+              height: 35,
               borderStyle: "none",
               borderRadius: 25,
               backgroundColor: "#5cc0ff",
               border: "2px solid #5cc0ff",
               cursor: "pointer",
-              color: "white",
+              color: "222222",
               fontSize: 16,
               padding: 4
             }}
@@ -82,6 +82,5 @@ const userStyle = {
   justifyContent: "center",
   display: "flex",
   flexDirection: "row",
-  backgroundColor: "#e3e3e3",
   letterSpacing: "1px"
 };

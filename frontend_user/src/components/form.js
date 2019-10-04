@@ -18,7 +18,6 @@ const UploadForm = ({ uploadMedia, toggleFormView, uploadData }) => {
     width: 200,
     textAlign: "center",
     height: 40,
-    border: "none",
     outline: "none",
     fontSize: "1.1em"
   };
@@ -65,7 +64,7 @@ const UploadForm = ({ uploadMedia, toggleFormView, uploadData }) => {
           return { ...prevState, titleError: "Invalid/No file name" };
         });
       }
-      if (title.trim() !=="" && text.trim() !== "") {
+      if (title.trim() !== "" && text.trim() !== "") {
         setLoading(true);
         uploadData({
           type: "text",
@@ -89,27 +88,25 @@ const UploadForm = ({ uploadMedia, toggleFormView, uploadData }) => {
     <div className="contentViewWrapperBackground">
       <div
         style={{
-          border: "1px solid #e3e3e3",
-          height: 400,
+          border: "1px solid #111111",
           width: 400,
           display: "flex",
           flexDirection: "column",
-          alignItems: "center",
           position: "relative",
-          backgroundColor: "white"
+          backgroundColor: "black"
         }}
       >
-        <div>
+        <div style={{ display: "flex", justifyContent: "center", margin: 12 }}>
           <input
             style={{
               width: "",
               border: "none",
-              height: 30,
               borderBottom: "2px solid #e1e1e1",
               padding: 4,
               fontSize: "1.2em",
-              outline: "none",
-              marginTop: 4
+              backgroundColor: "black",
+              color: "white",
+              outline: "none"
             }}
             placeholder="File Name"
             value={title}
@@ -124,12 +121,17 @@ const UploadForm = ({ uploadMedia, toggleFormView, uploadData }) => {
             {error.titleError}
           </p>
         </div>
-        <div style={{ display: "flex", margin: 0, marginTop: 30 }}>
+        <div style={{ display: "flex", margin: 30 }}>
           <button
             style={{
               ...buttonStyle,
-              backgroundColor: type === "text" ? "#5cc0ff" : "white",
-              color: type === "text" ? "white" : "black"
+              borderWidth: 2,
+              borderTopLeftRadius: 18,
+              borderBottomLeftRadius: 18,
+              borderColor: "#375FC6",
+              borderStyle: 'solid',
+              backgroundColor: type === "text" ? "#375FC6" : "black",
+              color: "white"
             }}
             onClick={() => setType("text")}
           >
@@ -138,8 +140,13 @@ const UploadForm = ({ uploadMedia, toggleFormView, uploadData }) => {
           <button
             style={{
               ...buttonStyle,
-              backgroundColor: type === "media" ? "#5cc0ff" : "white",
-              color: type === "media" ? "white" : "black"
+              borderWidth: 2,
+              borderTopRightRadius: 18,
+              borderBottomRightRadius: 18,
+              borderColor: "#375FC6",
+              borderStyle: 'solid',
+              backgroundColor: type === "media" ? "#375FC6" : "black",
+              color: "white"
             }}
             onClick={() => setType("media")}
           >
@@ -147,9 +154,18 @@ const UploadForm = ({ uploadMedia, toggleFormView, uploadData }) => {
           </button>
         </div>
         {type === "text" ? (
-          <div style={{ marginTop: 40 }}>
+          <div style={{ justifyContent: "center", display: "flex" }}>
             <textarea
-              style={{ width: 300, height: 150, padding: 8, resize: "none" }}
+              placeholder="Enter text you'd like to save here"
+              style={{
+                width: 300,
+                height: 150,
+                padding: 8,
+                resize: "none",
+                color: 'white',
+                backgroundColor: "black",
+                borderWidth: 0
+              }}
               onChange={e => {
                 setText(e.target.value);
                 setError(prevState => {
@@ -163,9 +179,7 @@ const UploadForm = ({ uploadMedia, toggleFormView, uploadData }) => {
         ) : (
           <div
             style={{
-              position: "relative",
               overflow: "hidden",
-              marginTop: 80,
               display: "flex",
               flexDirection: "column",
               alignItems: "center"
@@ -173,9 +187,6 @@ const UploadForm = ({ uploadMedia, toggleFormView, uploadData }) => {
           >
             <input
               style={{
-                position: "absolute",
-                left: 0,
-                top: 0,
                 opacity: 0,
                 cursor: "pointer",
                 height: 40
@@ -193,17 +204,17 @@ const UploadForm = ({ uploadMedia, toggleFormView, uploadData }) => {
                 border: "none",
                 height: 40,
                 width: 150,
-                backgroundColor: "#5cc0ff",
+                backgroundColor: "#375FC6",
                 borderRadius: 25,
                 color: "white",
                 fontSize: "1.1em",
                 cursor: "pointer"
               }}
             >
-              Upload
+              Select File
             </button>
             {media && (
-              <p style={{ color: "#5cc0ff", margin: 6 }}>{media.name}</p>
+              <p style={{ color: "#375FC6", margin: 6 }}>{media.name}</p>
             )}
             <p style={{ color: "#f7443e", margin: 6 }}>{error.mediaError}</p>
           </div>
@@ -211,10 +222,9 @@ const UploadForm = ({ uploadMedia, toggleFormView, uploadData }) => {
         {!loading && response === "" ? (
           <div
             style={{
-              position: "absolute",
-              bottom: 10,
-              right: 10,
-              display: "flex"
+              display: "flex",
+              justifyContent: 'flex-end',
+              margin: 20
             }}
           >
             <div
@@ -223,7 +233,6 @@ const UploadForm = ({ uploadMedia, toggleFormView, uploadData }) => {
                 width: 75,
                 height: 30,
                 borderStyle: "none",
-                backgroundColor: "white",
                 cursor: "pointer",
                 color: "grey",
                 fontSize: 16,
@@ -238,11 +247,10 @@ const UploadForm = ({ uploadMedia, toggleFormView, uploadData }) => {
               style={{
                 margin: 4,
                 width: 75,
-                height: 30,
                 borderStyle: "none",
                 borderRadius: 25,
-                backgroundColor: "#5cc0ff",
-                border: "2px solid #5cc0ff",
+                backgroundColor: "#375FC6",
+                border: "2px solid #375FC6",
                 cursor: "pointer",
                 color: "white",
                 fontSize: 16,
